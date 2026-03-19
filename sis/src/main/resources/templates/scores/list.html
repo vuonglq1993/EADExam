@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::body})}">
+<body>
+<div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h3 class="mb-0">Student Scores</h3>
+            <div class="text-muted">Grade = 0.3 * score1 + 0.7 * score2</div>
+        </div>
+        <div class="d-flex gap-2">
+            <a class="btn btn-outline-primary" th:href="@{/students/new}">+ Student</a>
+            <a class="btn btn-primary" th:href="@{/scores/new}">+ Score</a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                    <tr>
+                        <th>Student Code</th>
+                        <th>Full Name</th>
+                        <th>Address</th>
+                        <th>Subject</th>
+                        <th class="text-end">Score 1</th>
+                        <th class="text-end">Score 2</th>
+                        <th class="text-end">Weighted</th>
+                        <th class="text-center">Grade</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="ss : ${scores}">
+                        <td class="fw-semibold" th:text="${ss.student.studentCode}">2007A10</td>
+                        <td th:text="${ss.student.fullName}">Nguyễn Văn A</td>
+                        <td th:text="${ss.student.address}">Hà Nội</td>
+                        <td>
+                            <div class="fw-semibold" th:text="${ss.subject.subjectName}">Java Programming</div>
+                            <div class="text-muted small">
+                                <span th:text="${ss.subject.subjectCode}">JAVA</span>
+                                · <span th:text="${ss.subject.credit}">4</span> credits
+                            </div>
+                        </td>
+                        <td class="text-end" th:text="${ss.score1}">8.5</td>
+                        <td class="text-end" th:text="${ss.score2}">7.0</td>
+                        <td class="text-end" th:text="${ss.weightedScore}">7.45</td>
+                        <td class="text-center">
+                            <span class="badge"
+                                  th:classappend="${ss.gradeLetter == 'A'} ? ' text-bg-success' :
+                                                  (${ss.gradeLetter == 'B'} ? ' text-bg-primary' :
+                                                  (${ss.gradeLetter == 'D'} ? ' text-bg-warning' : ' text-bg-danger'))"
+                                  th:text="${ss.gradeLetter}">A</span>
+                        </td>
+                    </tr>
+
+                    <tr th:if="${#lists.isEmpty(scores)}">
+                        <td colspan="8" class="text-center text-muted py-4">No data</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mt-3">
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="fw-semibold mb-2">Score → Grade</div>
+                    <ul class="mb-0 small text-muted">
+                        <li>8.0 to 10 → A</li>
+                        <li>6.0 to 7.9 → B</li>
+                        <li>4.0 to 5.9 → D</li>
+                        <li>Less than 4.0 → F</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
